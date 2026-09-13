@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const RoutePanel = ({ onRouteSelect }) => {
+const RoutePanel = ({ onRouteSelect, selectedRoute }) => {
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
   const [routes, setRoutes] = useState([]);

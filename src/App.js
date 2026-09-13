@@ -49,7 +49,7 @@ function App() {
         <div className="control-panel">
           <AlertPanel crowds={crowds} />
           <CrowdReporter onCrowdReport={(zone, level) => setCrowds({...crowds, [zone]: level})} />
-          <RoutePanel onRouteSelect={setSelectedRoute} />
+          <RoutePanel onRouteSelect={setSelectedRoute} selectedRoute={selectedRoute} />
         </div>
       </div>
     </div>
