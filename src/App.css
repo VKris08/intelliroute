@@ -147,3 +147,62 @@ input[type="range"] {
 
 .low { color: #00aa00; font-weight: bold; }
 .high { color: #ff0000; font-weight: bold; }
+
+.stats-panel {
+  flex: 1;
+  background: white;
+  padding: 20px;
+  border-right: 1px solid #e0e0e0;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.crowd-stat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  font-size: 0.9em;
+}
+
+.crowd-stat span:first-child {
+  min-width: 80px;
+  font-weight: bold;
+  color: #667eea;
+}
+
+.bar {
+  flex: 1;
+  height: 20px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.bar .fill {
+  height: 100%;
+  transition: width 0.3s;
+}
+
+.crowd-stat span:last-child {
+  min-width: 40px;
+  text-align: right;
+  font-weight: bold;
+}
+
+.route-card.active {
+  background: #e8eaf6 !important;
+  border: 2px solid #667eea !important;
+}
+
+.instructions h4 {
+  color: #667eea;
+  margin-top: 10px;
+  margin-bottom: 8px;
+}
+
+.instructions p {
+  font-size: 0.85em;
+  margin: 4px 0;
+  color: #333;
+}

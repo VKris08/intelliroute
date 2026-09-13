@@ -11,27 +11,40 @@ const RoutePanel = ({ onRouteSelect }) => {
 
   const handleFindRoute = async (e) => {
     e.preventDefault();
-
-    // Fake data - No API calls needed
+  
+    // Different routes based on selected zones
+    const distance = Math.random() * 2 + 0.5; // Random 0.5-2.5 km
+    const duration = Math.round(distance * 2);
+  
     const mockRoutes = [
       { 
         id: 1, 
-        name: '🟢 Safe Route (Avoids Crowds)', 
-        duration: '8 min', 
+        name: `🟢 Safe Route (${start} → ${end})`, 
+        duration: `${duration + 3} min`, 
         congestion: 'Low',
         waypoints: 'Via Park Road',
-        distance: '0.8 km'
+        distance: `${distance.toFixed(1)} km`,
+        instructions: [
+          `Exit ${start} via south entrance`,
+          'Follow park path (less crowded)',
+          `Arrive ${end} via quiet entry`
+        ]
       },
       { 
         id: 2, 
-        name: '🔴 Fast Route (Direct)', 
-        duration: '5 min', 
+        name: `🔴 Fast Route (${start} → ${end})`, 
+        duration: `${Math.round(duration)} min`, 
         congestion: 'High',
         waypoints: 'Via Main Street',
-        distance: '0.5 km'
+        distance: `${(distance * 0.7).toFixed(1)} km`,
+        instructions: [
+          `Take direct path from ${start}`,
+          'High foot traffic expected',
+          `Arrive at ${end}`
+        ]
       }
     ];
-
+  
     setRoutes(mockRoutes);
   };
 
@@ -53,15 +66,27 @@ const RoutePanel = ({ onRouteSelect }) => {
       </form>
 
       <div className="routes-list">
-        {routes.map(route => (
-          <div key={route.id} className="route-card" onClick={() => onRouteSelect(route)}>
-            <h3>{route.name}</h3>
-            <p>⏱️ {route.duration}</p>
-            <p>Congestion: <span className={route.congestion.toLowerCase()}>{route.congestion}</span></p>
-            <p>Via: {route.waypoints}</p>
+  {routes.map(route => (
+    <div 
+      key={route.id} 
+      className={`route-card ${selectedRoute?.id === route.id ? 'active' : ''}`}
+      onClick={() => onRouteSelect(route)}
+    >
+      <h3>{route.name}</h3>
+      <p>⏱️ {route.duration} | 📍 {route.distance}</p>
+      <p>Congestion: {route.congestion}</p>
+      
+      {selectedRoute?.id === route.id && (
+        <div className="instructions">
+          <h4>Directions:</h4>
+          {route.instructions.map((inst, idx) => (
+            <p key={idx}>📍 {idx + 1}. {inst}</p>
+          ))}
+        </div>
+      )}
           </div>
-        ))}
-      </div>
+         ))}
+       </div>
     </div>
   );
 };
