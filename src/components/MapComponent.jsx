@@ -1,72 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
-
-mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
+import React from 'react';
 
 const MapComponent = ({ crowdData, selectedRoute }) => {
-  const mapContainer = React.useRef(null);
-  const map = React.useRef(null);
-
-  useEffect(() => {
-    if (map.current) return;
-
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/streets-v12',
-      center: [11.8, 56.1], // Lund University coords (example)
-      zoom: 15,
-    });
-
-    // Add heatmap layer
-    map.current.on('load', () => {
-      addCampusZones();
-      addHeatmapLayer();
-    });
-  }, []);
-
-  const addCampusZones = () => {
-    // Add building/zone GeoJSON
-    map.current.addSource('zones', {
-      type: 'geojson',
-      data: {
-        type: 'FeatureCollection',
-        features: [
-          {
-            type: 'Feature',
-            geometry: { type: 'Point', coordinates: [11.8, 56.1] },
-            properties: { name: 'Library', id: 'zone_1' }
-          },
-          // Add 5-6 key campus locations
-        ]
-      }
-    });
-
-    map.current.addLayer({
-      id: 'zones-layer',
-      type: 'circle',
-      source: 'zones',
-      paint: {
-        'circle-radius': 8,
-        'circle-color': '#007cbf',
-        'circle-opacity': 0.7
-      }
-    });
-  };
-
-  const addHeatmapLayer = () => {
-    // Color zones based on crowd density
-    // Green (empty) → Yellow → Red (congested)
-    const heatmapData = Object.entries(crowdData).map(([zone, level]) => ({
-      zone,
-      density: level, // 0-100
-      color: level < 30 ? '#00ff00' : level < 70 ? '#ffff00' : '#ff0000'
-    }));
-
-    console.log('Heatmap data:', heatmapData);
-  };
-
-  return <div ref={mapContainer} className="map-container" />;
+  return (
+    <div className="map-container">
+      <iframe
+        width="100%"
+        height="100%"
+        frameBorder="0"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.599348269662!2d76.49182!3d9.09406!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c87590ac50e1%3A0x1234567890!2sAmrita+Vishwa+Vidhyapeetham+Amritapuri!5e0!3m2!1sen!2sin!4v1234567890"
+        allowFullScreen=""
+        loading="lazy"
+        title="Campus Map"
+      ></iframe>
+      
+      <div className="crowd-overlay">
+        <h3>📊 Live Crowd Levels</h3>
+        {Object.entries(crowdData).map(([zone, level]) => (
+          <div key={zone} className="zone-badge" style={{
+            backgroundColor: level > 70 ? '#ff0000' : level > 30 ? '#ffff00' : '#00ff00'
+          }}>
+            {zone}: {level}%
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default MapComponent;
